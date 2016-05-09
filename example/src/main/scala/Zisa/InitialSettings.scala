@@ -66,7 +66,7 @@ object InitialSettings {
       selection_data
     }
     dialog.dialogPane = checklist_pane
-    val selections:List[Item] = dialog.showAndWait().asInstanceOf[Option[ObservableBuffer[Item]]].get.toList // FIX ***
+    val selections:List[Item] = dialog.showAndWait().asInstanceOf[Option[ObservableBuffer[Item]]].get.toList // FIX THIS***
     val selected_channels:List[Int] = selections.filter(x=>x.selected.value).map(x=>x.name.toInt)
     if (selected_channels.isEmpty) new Error("No channels selected")
     new ExperimentDefinition(selected_channels)

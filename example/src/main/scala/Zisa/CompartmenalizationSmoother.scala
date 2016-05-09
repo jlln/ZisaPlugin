@@ -97,6 +97,7 @@ object CompartmentalizationSmoother {
     dialog.resultConverter = dialogButton => radius
     dialog.dialogPane() = dialog_pane
     dialog.showAndWait()
+    preview_image.close()
     radius
   }
 

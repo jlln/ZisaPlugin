@@ -1,12 +1,14 @@
 package Zisa
 
+import ij.ImagePlus
 import ij.gui.ShapeRoi
 import ij.plugin.frame.RoiManager
 
 /**
   * Created by james on 3/05/16.
   */
-class CompartmentSlice(slice:Int,x_centre:Double,y_centre:Double,roi:ij.gui.Roi,area:Double){
+class CompartmentSlice(compartment:String,slice:Int,x_centre:Double,y_centre:Double,roi:ij.gui.Roi,area:Int){
+  def getCompartment = compartment
   def getSlice = slice
   def getXCentre = x_centre
   def getYCentre = y_centre
@@ -21,13 +23,17 @@ class CompartmentSlice(slice:Int,x_centre:Double,y_centre:Double,roi:ij.gui.Roi,
     new ij.gui.Roi(x,y,w,h)
   }
   def intersect(that:CompartmentSlice):Boolean = {
-    val this_roi = new ShapeRoi(this.getRoi)
+
     val slice_delta = scala.math.abs(slice - that.getSlice)
-    val that_roi = new ShapeRoi(that.getRoi)
-    val intersection_roi = this_roi.and(that_roi)
-    val overlap_box = intersection_roi.getBounds
-    val overlap_area = overlap_box.width * overlap_box.height
-    overlap_area > 0 & slice_delta < 2
+    if (slice_delta > 2) false
+    else {
+      val this_roi = new ShapeRoi(this.getRoi)
+      val that_roi = new ShapeRoi(that.getRoi)
+      val intersection_roi = this_roi.and(that_roi)
+      val overlap_box = intersection_roi.getBounds
+      val overlap_area = overlap_box.width * overlap_box.height
+      overlap_area > 0
+    }
   }
 
   def makeCroppedProcessor(image:ij.ImagePlus,boundaries:ij.gui.Roi):ij.process.ImageProcessor = {
@@ -51,5 +57,8 @@ class CompartmentSlice(slice:Int,x_centre:Double,y_centre:Double,roi:ij.gui.Roi,
     val processor = mask_image.getProcessor.crop()
     processor.getIntArray.map(x=>x.toList).toList
   }
+
+
+
 
 }

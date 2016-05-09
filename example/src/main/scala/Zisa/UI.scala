@@ -1,6 +1,7 @@
 package Zisa
 
-import ij.ImagePlus
+import ij.measure.ResultsTable
+import ij.{ImagePlus, WindowManager}
 
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
@@ -23,33 +24,23 @@ object UI extends JFXApp{
         padding = Insets(25)
         center = new Label("Zisa")
       }
-
     }
   }
-  val (first_image,images,middle_slice) = ImageIO.firstImageAndBegin()
+
+  val images = ImageIO.getImagePaths
+  val (first_image,middle_slice) = ImageIO.prepareFirstImage(images.head)
   val channels = ImageProcessing.splitChannels(first_image)
   val experiment = InitialSettings.initialSettings(stage,channels)
   val compartment_channels = experiment.getChannels.map(i => channels(i))
   val compartment_working_images:Seq[ImagePlus] = compartment_channels.map(c=>c.duplicate())
   val radii = compartment_channels.map( c => CompartmentalizationSmoother.dialogSmoother(stage,c,middle_slice))
-  val compartments:Seq[List[Compartment]] = compartment_working_images.zip(radii).map {
-    case (c, r) => CompartmentProcessing.processImageToCompartments(c, r)
-  }
-  val cells = CompartmentProcessing.mergeCompartmentsToCells(List(),compartments.flatten.toList)
-  cells.map{
-    c=> println(c)
-  }
-
-  val focussed_cells = cells.map(_.focus)
-
-  focussed_cells.map(x=>println(x))
+  val results_table = new ResultsTable()
+  images.map(i=> ImageProcessing.processImage(experiment.getChannels,radii,i,results_table))
 
 
 
 
 
-
-  sys.exit(1)
 
 
 }

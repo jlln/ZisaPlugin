@@ -52,21 +52,28 @@ object ImageIO {
       .map(s=> directory_name + "/" + s)
 
 
-  def firstImageAndBegin():(ij.ImagePlus,Array[String],Int) ={
-    //Get the root directory.
-    val rd:String = getDirectory()
-    //Identify subdirectories
+
+  def getImagePaths():Array[String] = {
+    val rd = getDirectory()
     val subdirectories:Array[String] = ImageIO.getListOfSubDirectories(rd)
-    //Throw error and terminate if root directory contains no subdirectories
     if (subdirectories.length == 0) {
       error("No subdirectories found ")
       0
     }
     val images:Array[String] = subdirectories.flatMap(s => getListOfFilesInSubDirectory(s))
-    val first_image = openImageFile(images.head)
-    val middle_slice = scala.math.ceil(first_image.getNSlices/2).toInt
-    (first_image,images,middle_slice)
+    if (images.length == 0){
+      error("No tif files found")
+      0
+    }
+    images
   }
+
+  def prepareFirstImage(image_path:String):(ij.ImagePlus,Int) = {
+    val first_image = openImageFile(image_path)
+    val middle_slice = scala.math.ceil(first_image.getNSlices/2).toInt
+    (first_image,middle_slice)
+  }
+
 
 
   

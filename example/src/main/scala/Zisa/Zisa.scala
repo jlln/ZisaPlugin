@@ -15,7 +15,7 @@ import ij.IJ
 
 
 
-class Zisa extends PlugIn {
+class Zisa_ extends PlugIn {
 
 
 
