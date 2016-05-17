@@ -2,7 +2,9 @@ Z-image-stack analyzer (Zisa): An ImageJ plugin for the automated analysis of im
 
 Installation:
 
-1) Download and install the Java SE Runtime for your platform from http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html
+At this time the plugin does not play nicely with Fiji. The best approach to get the plugin working is as follows, and involves creating a separate copy of ImageJ for use with Zisa:
+
+1) Download and install the Java SE Runtime 8u91 for your OS from http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html
 
 2) Download the Platform Independent version of ImageJ from http://rsb.info.nih.gov/ij/download.html
 
