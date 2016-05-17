@@ -19,7 +19,9 @@ Installation:
 
 7) Close and Reopen ImageJ. Zisa should now be present in the plugins menu.
 
-Usage: The program requires 
+Usage: 
+
+I strongly suggest reading the full instructions before attempting to use the plugin.
 
 1) You will need full stack images in tiff format (ie a single tiff containing all slices and channels from the image). These can be created using Fiji. The channels will need to be in the same order for each image. The images need to be saved in separate directories for each experimental condition; the names of these subdirectories will be used to label the output of the analysis. 
 A typical experiment directory structure might look like this:
@@ -36,6 +38,18 @@ Experiment Directory --
 Make sure that there are no other tif files present in the experimental directories.
 
 
-2) Start the Zisa plugin and you will be asked to select the root directory for the experiment. Once you have done this you will be prompted to select the compartmentalization channels for the experiment. These will be listed in the order in which they appear in the images. To understand what these compartments do, have a look at this diagram:
+2) I recommend moving the ImageJ toolbox to the top right hand corner of the screen at this point. Start the Zisa plugin and you will be asked to select the root directory for the experiment (Once you have launched the plugin, ImageJ needs to be restarted before it can be used again).
+Once you have chosen the directory you will be prompted to select the compartmentalization channels for the experiment. These will be listed in the order in which they appear in the images. To understand what these compartments mean, have a look at this diagram:
 
 ![alt tag](https://github.com/jlln/ZisaPlugin/blob/master/example/src/Illustration.png)
+
+As you can see, these channels will be used to define spatial zones of analysis. These zones are used to both define and compartmentalize the cells. The intensity of every channel in the image within these compartments will then be measured.
+
+3) Once you have selected the channels, you will be shown two images and a slider dialog. If you click the full preview checkbox, you will be shown the defined boundaries based on the currently chosen parameter. You can change the parameter if necessary (changing the parameter with full preview selected can be quite slow), until the compartments are properly defined. You can check the other slices using the z-axis sliders on the preview image. You will be asked to repeat this process for each compartmentalization channel you have chosen.
+
+4) At this point the process becomes fully automatic. I suggest observing the process until you are comfortable that it is working correctly. If you click on the wrong thing at this it can cause the program to crash, so I suggest looking but not touching.
+
+When the program is finished it will display a box labeled "Zisa" and an ImageJ table containing your results. You need to save your results from this table (by clicking File... Save As) before closing the Zisa window.
+
+
+
