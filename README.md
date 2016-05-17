@@ -8,7 +8,7 @@ Installation:
 
 3) Extract and run ImageJ.exe. You may be prompted to provide the location of javaw.exe. This should be at C:/ProgramFiles/Java/jre1.8.091/Bin/javaw.exe
 
-4) Download , and extract the files into the ImageJ plugins directory (the folder called "Plugins" in the main ImageJ folder).
+4) Download the zip file from https://github.com/jlln/ZisaPlugin/releases/tag/0.51 , and extract the files into the ImageJ plugins directory (the folder called "Plugins" in the main ImageJ folder).
 
 5) Launch ImageJ. Go to the plugins menu and click install, then navigate to the ImageJ plugins directory and select zisaplugin_2.11-0.5.0.jar. When prompted to choose a save location, choose the same folder and accept the prompt to overwrite the existing file.
 
