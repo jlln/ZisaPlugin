@@ -15,16 +15,11 @@ import ij.IJ
 
 
 
-class Zisa_ extends PlugIn {
+object Zisa_{
 
 
-
-
-  def run(arg:String) {
-    //Main function
+  def main(args: Array[String]): Unit = {
     UI.main(Array())
-
-
   }
 
 

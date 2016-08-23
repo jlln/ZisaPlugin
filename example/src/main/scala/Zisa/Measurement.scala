@@ -7,18 +7,39 @@ import ij.plugin.filter.Analyzer
 /**
   * Created by james on 6/05/16.
   */
+
+
+class ExperimentStage(stage_name:String,analysis_function:(ImagePlus,Cell,String)=>Seq[Result])
+
+class ExperimentSpecification(channels:Seq[Int],experiment_stages:List[ExperimentStage]){
+  //Used to define the channels for compartmentalization, and the options for analysis
+  def getChannels = channels
+  def getExperimentStages = experiment_stages
+}
+
+
 object Measurement {
+  //make a function that accepts an image and a cell and an image label and an experiment specification, and returns results.
+  def conductExperiment(image:ImagePlus,cell:Cell,image_label:String,specification:ExperimentSpecification):CellResultCollection = {
+
+  }
 
 
-  def measureCellularIntensity(image:ImagePlus,cell:Cell,image_label:String):Seq[Result] = {
+
+
+
+  val measureCellularIntensity:(Seq[ImagePlus],Cell,String => Seq[Result]) = (channels:Seq[ImagePlus],cell:Cell,image_label:String) => {
     val experimentalCondition = cell.getCondition
-    val results = cell.getCompartments.map{ c=>
+    val results = cell.getCompartments.map { c =>
+      {
       val comparment_name = c.getCompartment
-      measureIntensity(image,c,experimentalCondition,image_label)
+        channels.zipWithIndex.map {
+          case (image, image_label) => measureIntensity(image, c, experimentalCondition, image_label.toString)
+        }
+      }
     }
     results
   }
-
 
   def measureIntensity(image:ImagePlus,compartment:Compartment,condition_label:String,image_label:String):Result = {
     //Measure the mean intensity of a given image across the slices of a compartment
@@ -40,6 +61,16 @@ object Measurement {
     new Result(compartment_name,condition_label,result_entries)
 
   }
+
+  def measurePearsonCorrelation(image:ImagePlus,compartment:Compartment,condition_label:String,image_label:String):Result = {
+    val pixels = compartment.
+  }
+
+
+
+
+
+
 
 
 }

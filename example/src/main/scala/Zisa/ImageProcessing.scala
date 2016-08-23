@@ -24,11 +24,10 @@ object ImageProcessing {
       val segments = image_path.split("/")
       segments(segments.length - 2)
     }
-
     val compartments: Seq[List[Compartment]] = compartment_channels.zip(blurring_radii).map {
       case (c, r) => CompartmentProcessing.processChannelToCompartments(c.toString, channels(c), r)
     }
-    val cells = CompartmentProcessing.mergeCompartmentsToCells(experimental_condition, List(), compartments.flatten.toList)
+    val cells:List[Cell] = CompartmentProcessing.mergeCompartmentsToCells(experimental_condition, List(), compartments.flatten.toList)
     val focussed_cells = cells.map(_.focus())
 
     val intensity_results:Seq[CellResultCollection] = cells.map {

@@ -7,7 +7,8 @@ import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.geometry.Insets
 import scalafx.scene.Scene
-import scalafx.scene.control.{Dialog, Label}
+import scalafx.scene.control.Alert.AlertType
+import scalafx.scene.control.{Alert, ButtonType, Dialog, Label}
 import scalafx.scene.layout.BorderPane
 
 
@@ -16,6 +17,7 @@ import scalafx.scene.layout.BorderPane
   */
 
 object UI extends JFXApp{
+
   //core thread for FX UI
   stage = new PrimaryStage{
     title = "Zisa"
@@ -26,16 +28,35 @@ object UI extends JFXApp{
       }
     }
   }
+  val alert = new Alert(AlertType.Confirmation) {
+    initOwner(stage)
+    title = "Zisa"
+    headerText = "Welcome to the Z-Image-Analyser."
+    contentText = "Ready to begin"
+  }
+  val result = alert.showAndWait()
 
-  val images = ImageIO.getImagePaths
-  val (first_image,middle_slice) = ImageIO.prepareFirstImage(images.head)
-  val channels = ImageProcessing.splitChannels(first_image)
-  val experiment = InitialSettings.initialSettings(stage,channels)
-  val compartment_channels = experiment.getChannels.map(i => channels(i))
-  val compartment_working_images:Seq[ImagePlus] = compartment_channels.map(c=>c.duplicate())
-  val radii = compartment_channels.map( c => CompartmentalizationSmoother.dialogSmoother(stage,c,middle_slice))
-  val results_table = new ResultsTable()
-  images.map(i=> ImageProcessing.processImage(experiment.getChannels,radii,i,results_table))
+  // React to user's selection
+  result match {
+    case Some(ButtonType.OK) => execute
+    case _                   => System.exit(0)
+  }
+
+
+  // Execute Zisa
+  val execute =  {
+    val images = ImageIO.getImagePaths
+    val (first_image, middle_slice) = ImageIO.prepareFirstImage(images.head)
+    val channels = ImageProcessing.splitChannels(first_image)
+    val experiment = InitialSettings.initialSettings(stage, channels)
+    val compartment_channels = experiment.getChannels.map(i => channels(i))
+    val compartment_working_images: Seq[ImagePlus] = compartment_channels.map(c => c.duplicate())
+    val radii = compartment_channels.map(c => CompartmentalizationSmoother.dialogSmoother(stage, c, middle_slice))
+    val results_table = new ResultsTable()
+    images.map(i => ImageProcessing.processImage(experiment.getChannels, radii, i, results_table))
+  }
+
+
 
 
 

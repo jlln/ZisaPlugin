@@ -26,7 +26,9 @@ class CellResultCollection(condition:String,results:Seq[Result]){
     results.map{ r=>
       println(r.column_name + ": " + r.scaledMean)
     }
-
+  }
+  def addNewResult(new_result:Result):Result = {
+    new CellResultCollection(condition,results :+ new_result)
   }
 }
 
