@@ -53,7 +53,7 @@ object UI extends JFXApp{
     val compartment_working_images: Seq[ImagePlus] = compartment_channels.map(c => c.duplicate())
     val radii = compartment_channels.map(c => CompartmentalizationSmoother.dialogSmoother(stage, c, middle_slice))
     val results_table = new ResultsTable()
-    images.map(i => ImageProcessing.processImage(experiment.getChannels, radii, i, results_table))
+    images.map(i => ImageProcessing.processImage(radii, i, results_table,experiment))
   }
 
 

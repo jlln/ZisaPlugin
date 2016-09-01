@@ -12,6 +12,8 @@ import ij.measure.ResultsTable
 class CellResultCollection(condition:String,results:Seq[Result]){
   // Corresponds to all of the measurements made on a single cell.
   val area = results.head.getArea
+  val getCondition = condition
+  val getResults = results
   def writeResult(table:ResultsTable): Unit ={
     //Writes the results to an ImageJ result table.
     table.incrementCounter()
@@ -27,9 +29,14 @@ class CellResultCollection(condition:String,results:Seq[Result]){
       println(r.column_name + ": " + r.scaledMean)
     }
   }
-  def addNewResult(new_result:Result):Result = {
+  def addNewResult(new_result:Result):CellResultCollection = {
     new CellResultCollection(condition,results :+ new_result)
   }
+  def addNewResultCollection(new_result_collection:CellResultCollection):CellResultCollection = {
+    if (new_result_collection.getCondition != condition) throw new Exception("Can only merge result collections of the same condition")
+    new CellResultCollection(condition,results ++ new_result_collection.getResults)
+  }
+
 }
 
 

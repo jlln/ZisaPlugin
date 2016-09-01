@@ -17,7 +17,8 @@ object ImageProcessing {
 
 
 
-  def processImage(compartment_channels:Seq[Int],blurring_radii:Seq[Int],image_path:String,table:ResultsTable) = {
+  def processImage(blurring_radii:Seq[Int],image_path:String,table:ResultsTable,experiment_specification: ExperimentSpecification) = {
+    val compartment_channels = experiment_specification.getChannels
     val image = ImageIO.openImageFile(image_path)
     val channels: Array[ImagePlus] = splitChannels(image)
     val experimental_condition = {
@@ -30,12 +31,13 @@ object ImageProcessing {
     val cells:List[Cell] = CompartmentProcessing.mergeCompartmentsToCells(experimental_condition, List(), compartments.flatten.toList)
     val focussed_cells = cells.map(_.focus())
 
-    val intensity_results:Seq[CellResultCollection] = cells.map {
-      cell => new CellResultCollection(experimental_condition,channels.zipWithIndex.map{
-        case(channel,i) => Measurement.measureCellularIntensity(channel,cell,i.toString)
-      }.toSeq.flatten)
-    }
-    intensity_results.map(_.writeResult(table))
+//    val intensity_results:Seq[CellResultCollection] = cells.map {
+//      cell => new CellResultCollection(experimental_condition,channels.zipWithIndex.map{
+//        case(channel,i) => Measurement.measureCellularIntensity(channel,cell,i.toString)
+//      }.toSeq.flatten)
+//    }
+    val results:List[CellResultCollection] = cells.map{ c=> Measurement.conductExperiment(channels,c,experiment_specification)}
+    results.map(_.writeResult(table))
     image.changes = false
     channels.map(_.changes=false)
     WindowManager.closeAllWindows()

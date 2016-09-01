@@ -9,7 +9,9 @@ import ij.plugin.filter.Analyzer
   */
 
 
-class ExperimentStage(stage_name:String,analysis_function:(ImagePlus,Cell,String)=>Seq[Result])
+class ExperimentStage(stage_name:String,analysis_function:((Seq[ImagePlus],Cell)=>List[Seq[Result]])){
+  def run(channels:Seq[ImagePlus],cell:Cell):CellResultCollection = new CellResultCollection(cell.getCondition,analysis_function(channels,cell).flatten)
+}
 
 class ExperimentSpecification(channels:Seq[Int],experiment_stages:List[ExperimentStage]){
   //Used to define the channels for compartmentalization, and the options for analysis
@@ -20,15 +22,18 @@ class ExperimentSpecification(channels:Seq[Int],experiment_stages:List[Experimen
 
 object Measurement {
   //make a function that accepts an image and a cell and an image label and an experiment specification, and returns results.
-  def conductExperiment(image:ImagePlus,cell:Cell,image_label:String,specification:ExperimentSpecification):CellResultCollection = {
-
+  def conductExperiment(channels:Seq[ImagePlus],cell:Cell,specification:ExperimentSpecification):CellResultCollection = {
+    val stages = specification.getExperimentStages
+    val experiment_results = stages.map(s=> s.run(channels,cell))
+    val cell_result = experiment_results.tail.foldLeft(experiment_results.head)(_.addNewResultCollection(_))
+    cell_result
   }
 
 
 
 
 
-  val measureCellularIntensity:(Seq[ImagePlus],Cell,String => Seq[Result]) = (channels:Seq[ImagePlus],cell:Cell,image_label:String) => {
+  val measureCellularIntensity:((Seq[ImagePlus],Cell) => List[Seq[Result]]) = (channels:Seq[ImagePlus],cell:Cell) => {
     val experimentalCondition = cell.getCondition
     val results = cell.getCompartments.map { c =>
       {
@@ -62,9 +67,9 @@ object Measurement {
 
   }
 
-  def measurePearsonCorrelation(image:ImagePlus,compartment:Compartment,condition_label:String,image_label:String):Result = {
-    val pixels = compartment.
-  }
+//  def measurePearsonCorrelation(image:ImagePlus,compartment:Compartment,condition_label:String,image_label:String):Result = {
+//    val pixels = compartment.
+//  }
 
 
 
