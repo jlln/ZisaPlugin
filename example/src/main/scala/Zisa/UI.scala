@@ -1,5 +1,6 @@
 package Zisa
 
+import Zisa.src.InitialSettings
 import ij.measure.ResultsTable
 import ij.{ImagePlus, WindowManager}
 

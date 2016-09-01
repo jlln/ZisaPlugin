@@ -10,5 +10,6 @@
     <orderEntry type="library" name="scala-sdk-2.11.8" level="application" />
     <orderEntry type="library" name="org.scalafx:scalafx_2.11:8.0.92-R10" level="project" />
     <orderEntry type="library" name="ij" level="project" />
+    <orderEntry type="library" name="org.scalatest:scalatest_2.11:3.0.0-M15" level="project" />
   </component>
 </module>
