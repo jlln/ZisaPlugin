@@ -1,18 +1,19 @@
-package Zisa
+package Zisa.src
 
-import Zisa.src.InitialSettings
+import ij.ImagePlus
 import ij.measure.ResultsTable
-import ij.{ImagePlus, WindowManager}
 
+import scalafx.Includes._
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.geometry.Insets
 import scalafx.scene.Scene
 import scalafx.scene.control.Alert.AlertType
-import scalafx.scene.control.{Alert, ButtonType, Dialog, Label}
+import scalafx.scene.control.{Alert, ButtonType, Label, TextArea}
 import scalafx.scene.layout.BorderPane
-
-
+import javafx.event.EventHandler
+import javafx.event.ActionEvent
+import scalafx.scene.control.Button
 /**
   * Created by james on 27/04/16.
   */
@@ -20,16 +21,22 @@ import scalafx.scene.layout.BorderPane
 object UI extends JFXApp{
 
   //core thread for FX UI
+
+
+
   stage = new PrimaryStage{
     title = "Zisa"
     scene = new Scene{
       root = new BorderPane{
         padding = Insets(25)
         center = new Label("Zisa")
+        bottom = new Label("Close this window to terminate the program.")
       }
     }
+    alwaysOnTop = true
   }
-  val alert = new Alert(AlertType.Confirmation) {
+  stage.show()
+  val alert = new Alert(AlertType.Information) {
     initOwner(stage)
     title = "Zisa"
     headerText = "Welcome to the Z-Image-Analyser."

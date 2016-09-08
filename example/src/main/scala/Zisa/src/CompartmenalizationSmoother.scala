@@ -1,17 +1,14 @@
-package Zisa
+package Zisa.src
 
 import java.text.NumberFormat
-import javafx.event.EventHandler
 
 import ij.{IJ, ImagePlus, WindowManager}
 
 import scalafx.application.JFXApp.PrimaryStage
-import scalafx.event.Event
 import scalafx.geometry.Insets
-import scalafx.scene.Scene
 import scalafx.scene.control.ButtonBar.ButtonData
 import scalafx.scene.control._
-import scalafx.scene.layout.{BorderPane, GridPane, Region}
+import scalafx.scene.layout.{GridPane, Region}
 import scalafx.util.converter.FormatStringConverter
 
 

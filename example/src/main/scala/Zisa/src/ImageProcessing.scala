@@ -1,13 +1,14 @@
-package Zisa
+package Zisa.src
 
 /**
   * Created by james on 27/04/16.
   */
 
 
-import ij.{ImagePlus, WindowManager}
 import ij.measure.ResultsTable
 import ij.plugin.ChannelSplitter
+import ij.process.{FloatProcessor, ImageProcessor}
+import ij.{ImagePlus, WindowManager}
 object ImageProcessing {
 
 
@@ -15,6 +16,15 @@ object ImageProcessing {
     ChannelSplitter.split(image)
   }
 
+  def applyThreshold(channel:ImageProcessor, threshold:Double): FloatProcessor ={
+    //Applies threshold to a single processor slice of an image
+    val channel_pixels:Array[Array[Float]] = channel.getFloatArray()
+    val thresholded_pixels = channel_pixels.map(row => row.map(pixel =>{
+      if (pixel > threshold) 255
+      else 0
+      }))
+    new FloatProcessor(thresholded_pixels)
+  }
 
 
   def processImage(blurring_radii:Seq[Int],image_path:String,table:ResultsTable,experiment_specification: ExperimentSpecification) = {
@@ -31,12 +41,8 @@ object ImageProcessing {
     val cells:List[Cell] = CompartmentProcessing.mergeCompartmentsToCells(experimental_condition, List(), compartments.flatten.toList)
     val focussed_cells = cells.map(_.focus())
 
-//    val intensity_results:Seq[CellResultCollection] = cells.map {
-//      cell => new CellResultCollection(experimental_condition,channels.zipWithIndex.map{
-//        case(channel,i) => Measurement.measureCellularIntensity(channel,cell,i.toString)
-//      }.toSeq.flatten)
-//    }
-    val results:List[CellResultCollection] = cells.map{ c=> Measurement.conductExperiment(channels,c,experiment_specification)}
+
+    val results:List[CellResultCollection] = focussed_cells.map{ c=> Measurement.conductExperiment(channels,c,experiment_specification)}
     results.map(_.writeResult(table))
     image.changes = false
     channels.map(_.changes=false)

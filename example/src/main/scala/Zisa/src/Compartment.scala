@@ -1,7 +1,8 @@
-package Zisa
+package Zisa.src
 
 import ij.measure.ResultsTable
 import ij.plugin.filter.Analyzer
+import ij.process.ImageProcessor
 import ij.{IJ, ImagePlus}
 
 /**
@@ -50,12 +51,10 @@ class Compartment(image:ImagePlus,slices:List[CompartmentSlice]){
     }
   }
 
-  def getPixels(mask:List[List[List[Int]]]):Array[Array[Array[Float]]] = {
-    getSlices.toArray.zip(mask).map{
-      case (s,m)=>s.getPixels(image,m)
-    }
+  def getPixels(image:ImagePlus):Array[Array[Array[Float]]] = {
+    getSlices.map(s=>s.getPixels(image)).toArray
   }
-  def getMaskingImages(mask_image:ij.ImagePlus):List[List[List[Int]]] = {
+  def getMaskingPixels(mask_image:ij.ImagePlus):List[Array[Array[Int]]] = {
     getSlices.map(s=>s.getMaskPixels(mask_image))
   }
 
@@ -95,6 +94,17 @@ class Compartment(image:ImagePlus,slices:List[CompartmentSlice]){
   def selectSliceSubset(indices:List[Int]):Compartment = {
     val retained_slices = slices.filter(s=> indices.contains(s.getSlice))
     new Compartment(image,retained_slices)
+  }
+
+
+  def applyThreshold(channel:ImagePlus,threshold:Double):ImagePlus = {
+    val thresholded_image = getSlices.map(s=> {
+      channel.setSlice(s.getSlice)
+      val slice_processor = channel.getProcessor()
+      val thresholded_slice = s.applyThreshold(slice_processor,threshold)
+      channel.setProcessor(thresholded_slice)
+      })
+    channel
   }
 
 

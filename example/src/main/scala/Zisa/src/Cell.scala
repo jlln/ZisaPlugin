@@ -1,4 +1,4 @@
-package Zisa
+package Zisa.src
 
 import ij.ImagePlus
 
@@ -41,6 +41,11 @@ class Cell(experimental_condition:String,compartments:List[Compartment]) {
     new ij.gui.Roi(x,y,w,h)
   }
 
+  def applyThreshold(channel:ImagePlus,threshold:Double):ImagePlus = {
+    getCompartments.head.applyThreshold(channel,threshold)
+  }
+
+
   def visualInspection(image:ImagePlus): Unit ={
     image.setRoi(getBoundingBox)
     val preview_image = image.duplicate()
@@ -48,6 +53,8 @@ class Cell(experimental_condition:String,compartments:List[Compartment]) {
     Thread.sleep(10000)
     preview_image.close()
   }
+
+
 
 
 

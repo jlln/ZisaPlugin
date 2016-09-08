@@ -1,10 +1,9 @@
-package Zisa
+package Zisa.src
 
 /**
   * Created by james on 3/05/16.
   */
-import scala.math.sqrt
-import scala.math.pow
+import scala.math.{pow, sqrt}
 object Stats {
   def mean[T](items:Traversable[T])(implicit n:Numeric[T]) =
     n.toDouble(items.sum) / items.size.toDouble

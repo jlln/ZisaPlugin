@@ -1,19 +1,14 @@
-package Zisa
-
+package Zisa.src
 
 /**
   * @author james
   */
 
 
-import ij.ImagePlus
-import ij.IJ
-import ij.WindowManager
 import java.io._
-import java.util.concurrent.CountDownLatch
 
 import ij.IJ._
-import ij.gui.GenericDialog
+import ij.{IJ, ImagePlus, WindowManager}
 import ij.io.DirectoryChooser
 object ImageIO {
   def openImageFile(filepath:String):ij.ImagePlus = {
@@ -25,6 +20,7 @@ object ImageIO {
     val image_width:Int  = image.head.length
     val processor = new ij.process.ByteProcessor(image_height,image_width)
     processor.setIntArray(image)
+    processor.resetMinAndMax()
     new ij.ImagePlus("thresholded_image",processor)
   }
 
@@ -73,6 +69,9 @@ object ImageIO {
     val middle_slice = scala.math.ceil(first_image.getNSlices/2).toInt
     (first_image,middle_slice)
   }
+
+
+
 
 
 

@@ -1,18 +1,13 @@
-package Zisa
+package Zisa.src
 
 /**
   * @author james
   *
   */
-import ij.ImagePlus
-import ij.plugin.ChannelSplitter
-import ij.IJ
-import ij.WindowManager
-import ij.plugin.frame.RoiManager
+import ij.{IJ, ImagePlus}
 import ij.measure.ResultsTable
 import ij.plugin.filter.ParticleAnalyzer
-import ij.plugin.filter.Analyzer
-import ij.gui.Roi
+import ij.plugin.frame.RoiManager
 
 import scala.annotation.tailrec
 

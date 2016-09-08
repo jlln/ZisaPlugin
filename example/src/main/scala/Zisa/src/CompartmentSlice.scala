@@ -1,8 +1,7 @@
-package Zisa
+package Zisa.src
 
-import ij.ImagePlus
 import ij.gui.ShapeRoi
-import ij.plugin.frame.RoiManager
+import ij.process.ImageProcessor
 
 /**
   * Created by james on 3/05/16.
@@ -41,21 +40,30 @@ class CompartmentSlice(compartment:String,slice:Int,x_centre:Double,y_centre:Dou
     image.setSlice(getSlice)
     image.getProcessor.crop()
   }
-  def getPixels(image:ij.ImagePlus,mask:List[List[Int]]):Array[Array[Float]] = {
+  def getPixels(image:ij.ImagePlus):Array[Array[Float]] = {
+    val mask = getMaskPixels(image)
     val cropped_image = makeCroppedProcessor(image,getBoundingBox)
     cropped_image.resetMinAndMax()
-    val pixel_array:Array[Array[Float]] = cropped_image.getFloatArray
-    val corrected_array = pixel_array.flatten.zip(mask.flatten).map{
+    val pixel_array:Array[Float] = cropped_image.getFloatArray.flatten
+    val mask_array:Array[Int] = mask.flatten
+    if (pixel_array.length != mask_array.length){
+      throw new Exception("Mask and Image not equal in size")
+    }
+    pixel_array.zip(mask_array).map{
       case (p,m) => if (m > 0) p else 0
-    }.grouped(mask.head.length)
-    corrected_array.toArray
+    }.grouped(mask.head.length).toArray
+
   }
 
-  def getMaskPixels(mask_image:ij.ImagePlus):List[List[Int]] = {
-    mask_image.setSlice(slice)
-    mask_image.setRoi(roi)
-    val processor = mask_image.getProcessor.crop()
-    processor.getIntArray.map(x=>x.toList).toList
+  def getMaskPixels(image:ij.ImagePlus):Array[Array[Int]] = {
+    image.setSlice(slice)
+    val processor = image.getProcessor
+    processor.setRoi(roi)
+    processor.getMask().getIntArray()
+  }
+
+  def applyThreshold(image:ImageProcessor,threshold:Double):ImageProcessor = {
+    ImageProcessing.applyThreshold(image,threshold)
   }
 
 

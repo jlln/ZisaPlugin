@@ -1,4 +1,4 @@
-package Zisa
+package Zisa.src
 
 import ij.measure.ResultsTable
 
@@ -42,6 +42,8 @@ class CellResultCollection(condition:String,results:Seq[Result]){
 
 class Result(compartment:String,condition:String,entries:Array[ResultEntry]) {
   //This class corresponds to the results from a single measurement type made on a single compartment of a single cell.
+  if (entries.map(_.getLabel).distinct.length >1) throw new Exception("ResultEntries within a Result must all be of the same measurement type")
+  if (!entries.map(_.getCompartment).forall(_ == compartment)) throw new Exception("ResultEntries within a Result must all correspond to the same subcellular compartment")
   val getCompartment = compartment
   val getCondition = condition
   val getEntries = entries
@@ -72,6 +74,8 @@ class Result(compartment:String,condition:String,entries:Array[ResultEntry]) {
 
 class ResultEntry(compartment:String,label:String,value:Option[Double],area:Int){
   //This class corresponds to the result from a single measurement on a single slice of a single cell.
+  //compartment = the cellular compartment label string
+  // label = the measurement label
   def getCompartment = compartment
   def getLabel = label //eg Compartment1IntensityChannel2
   def getArea = area
@@ -81,9 +85,9 @@ class ResultEntry(compartment:String,label:String,value:Option[Double],area:Int)
     case Some(x) => Some(x)
     case None => None
   }
-  override def hashCode = 31 * (31+value.hashCode) + label.hashCode + compartment.hashCode
+  override def hashCode = 31 * (31+value.hashCode) + label.hashCode + compartment.hashCode + 31*getArea
   override def equals(other:Any) = other match{
-    case that:ResultEntry => this.label == that.getLabel && this.value == that.getValue && that.getCompartment == this.compartment
+    case that:ResultEntry => this.label == that.getLabel && this.value == that.getValue && that.getCompartment == this.compartment && this.getArea == that.getArea
     case _ => false
   }
 }

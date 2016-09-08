@@ -2,6 +2,7 @@
   * Created by james on 5/05/16.
   */
 import Zisa._
+import Zisa.src.{ExperimentSpecification, ExperimentStage, ImageProcessing, Measurement}
 import ij.measure.ResultsTable
 import org.scalatest._
 
