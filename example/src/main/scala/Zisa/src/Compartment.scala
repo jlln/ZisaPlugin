@@ -54,8 +54,8 @@ class Compartment(image:ImagePlus,slices:List[CompartmentSlice]){
   def getPixels(image:ImagePlus):Array[Array[Array[Float]]] = {
     getSlices.map(s=>s.getPixels(image)).toArray
   }
-  def getMaskingPixels(mask_image:ij.ImagePlus):List[Array[Array[Int]]] = {
-    getSlices.map(s=>s.getMaskPixels(mask_image))
+  def getMaskingPixels(mask_image:ij.ImagePlus):Array[Array[Array[Int]]] = {
+    getSlices.toArray.map(s=>s.getMaskPixels(mask_image))
   }
 
   def overlapExistsWithCompartment(that:Compartment):Boolean = {
@@ -68,6 +68,7 @@ class Compartment(image:ImagePlus,slices:List[CompartmentSlice]){
   }
 
   def focus():Compartment = {
+    // must be called while the image is still open
     val edge_mask = image.duplicate()
     IJ.run(edge_mask, "Find Edges","stack")
     var variance_results = new ResultsTable()
@@ -97,15 +98,7 @@ class Compartment(image:ImagePlus,slices:List[CompartmentSlice]){
   }
 
 
-  def applyThreshold(channel:ImagePlus,threshold:Double):ImagePlus = {
-    val thresholded_image = getSlices.map(s=> {
-      channel.setSlice(s.getSlice)
-      val slice_processor = channel.getProcessor()
-      val thresholded_slice = s.applyThreshold(slice_processor,threshold)
-      channel.setProcessor(thresholded_slice)
-      })
-    channel
-  }
+
 
 
 

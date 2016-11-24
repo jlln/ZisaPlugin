@@ -4,21 +4,6 @@ import ij.ImagePlus
 import ij.measure.ResultsTable
 import ij.plugin.filter.Analyzer
 
-/**
-  * Created by james on 6/05/16.
-  */
-
-
-class ExperimentStage(stage_name:String,analysis_function:((Seq[ImagePlus],Cell)=>List[Seq[Result]])){
-  def run(channels:Seq[ImagePlus],cell:Cell):CellResultCollection = new CellResultCollection(cell.getCondition,analysis_function(channels,cell).flatten)
-}
-
-class ExperimentSpecification(channels:Seq[Int],experiment_stages:List[ExperimentStage]){
-  //Used to define the channels for compartmentalization, and the analyses to conduct.
-  def getChannels = channels
-  def getExperimentStages = experiment_stages
-}
-
 
 object Measurement {
   //make a function that accepts an image and a cell and an image label and an experiment specification, and returns results.

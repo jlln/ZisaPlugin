@@ -16,15 +16,7 @@ object ImageProcessing {
     ChannelSplitter.split(image)
   }
 
-  def applyThreshold(channel:ImageProcessor, threshold:Double): FloatProcessor ={
-    //Applies threshold to a single processor slice of an image
-    val channel_pixels:Array[Array[Float]] = channel.getFloatArray()
-    val thresholded_pixels = channel_pixels.map(row => row.map(pixel =>{
-      if (pixel > threshold) 255
-      else 0
-      }))
-    new FloatProcessor(thresholded_pixels)
-  }
+
 
 
   def processImage(blurring_radii:Seq[Int],image_path:String,table:ResultsTable,experiment_specification: ExperimentSpecification) = {

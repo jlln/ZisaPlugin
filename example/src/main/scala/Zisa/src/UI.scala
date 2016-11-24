@@ -22,8 +22,6 @@ object UI extends JFXApp{
 
   //core thread for FX UI
 
-
-
   stage = new PrimaryStage{
     title = "Zisa"
     scene = new Scene{

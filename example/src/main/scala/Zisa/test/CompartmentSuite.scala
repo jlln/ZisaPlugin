@@ -10,16 +10,12 @@ import org.scalatest._
 
 class CompartmentSuite extends FunSuite with Matchers {
   val test_images_dir = "/home/james/ZisaDev/ZisaPlugin/example/src/main/scala/Zisa/test/resources/"
-  val test_image_1_path = test_images_dir +"sample_1.tif"
-  val test_image_2_path = test_images_dir +"sample_2.tif"
-  val test_image_3_path = test_images_dir +"sample_3.tif"
+  val test_image_1_path = test_images_dir +"test-1.tif"
+  val test_image_2_path = test_images_dir +"test-2.tif"
+  val test_image_3_path = test_images_dir +"test-3.tif"
   val test_image_1 = ImageProcessing.splitChannels(ImageIO.openImageFile(test_image_1_path)).head
   val test_image_2 = ImageProcessing.splitChannels(ImageIO.openImageFile(test_image_2_path)).head
   val test_image_3 = ImageIO.openImageFile(test_image_3_path)
-
-
-
-
 
 
   test("CreateCompartmentSlices"){

@@ -41,6 +41,7 @@ class CompartmentSlice(compartment:String,slice:Int,x_centre:Double,y_centre:Dou
     image.getProcessor.crop()
   }
   def getPixels(image:ij.ImagePlus):Array[Array[Float]] = {
+    //image: the full image, possibly containing multiple cells.
     val mask = getMaskPixels(image)
     val cropped_image = makeCroppedProcessor(image,getBoundingBox)
     cropped_image.resetMinAndMax()
@@ -52,7 +53,6 @@ class CompartmentSlice(compartment:String,slice:Int,x_centre:Double,y_centre:Dou
     pixel_array.zip(mask_array).map{
       case (p,m) => if (m > 0) p else 0
     }.grouped(mask.head.length).toArray
-
   }
 
   def getMaskPixels(image:ij.ImagePlus):Array[Array[Int]] = {
@@ -62,9 +62,9 @@ class CompartmentSlice(compartment:String,slice:Int,x_centre:Double,y_centre:Dou
     processor.getMask().getIntArray()
   }
 
-  def applyThreshold(image:ImageProcessor,threshold:Double):ImageProcessor = {
-    ImageProcessing.applyThreshold(image,threshold)
-  }
+//  def applyThreshold(image:ImageProcessor,threshold:Double):ImageProcessor = {
+//    ImageProcessing.applyThreshold(image,threshold)
+//  }
 
 
 

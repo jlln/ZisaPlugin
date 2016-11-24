@@ -8,11 +8,6 @@ import ij.plugin.filter.ParticleAnalyzer
 
 object Blobs{
 
-  def thresholdCellChannel(k:Int,channel:ImagePlus,cell:Cell):Double = {
-    //Get the threshold for a single channel of a single cell
-    val compartment_pixels:Array[Float] = cell.getCompartments.toArray.flatMap(c=> c.getPixels(channel)).flatten.flatten
-    kMeans(k,compartment_pixels)
-  }
 
 
   def kMeansIter(items:List[Float],groups:List[List[Float]]):Double = {
@@ -20,7 +15,6 @@ object Blobs{
     val group_boundaries = group_means.sliding(2).map{
       p=>Stats.mean(p)
     }.toList
-    println(group_boundaries)
     val new_groups = (0 until group_boundaries.length).map{
       i=> i match{
         case 0 => items.filter(x=> x <= group_boundaries(i))

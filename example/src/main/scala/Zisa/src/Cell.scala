@@ -17,13 +17,16 @@ class Cell(experimental_condition:String,compartments:List[Compartment]) {
     intersections.contains(true)
   }
 
+
+
+
   def focus():Cell = {
     val focussed_compartments = compartments.map(_.focus)
     val focussed_compartment_indices = focussed_compartments.map(_.getSlices.map(_.getSlice))
     val common_slices = if (compartments.length > 1)
       focussed_compartment_indices.tail.foldLeft(focussed_compartment_indices.head)((a: List[Int], b: List[Int]) => a intersect b)
-    else
-      focussed_compartment_indices.head
+      else
+        focussed_compartment_indices.head
     val compartments_retained = compartments.map(c=> c.selectSliceSubset(common_slices))
     new Cell(experimental_condition,compartments_retained)
   }
@@ -41,9 +44,26 @@ class Cell(experimental_condition:String,compartments:List[Compartment]) {
     new ij.gui.Roi(x,y,w,h)
   }
 
-  def applyThreshold(channel:ImagePlus,threshold:Double):ImagePlus = {
-    getCompartments.head.applyThreshold(channel,threshold)
+  def findThreshold(channel:ImagePlus,k:Int):Double = {
+    val pixels:Array[Float] = compartments.toArray.flatMap(c => c.getPixels(channel)).flatten.flatten
+    Blobs.kMeans(k,pixels)
   }
+
+  def getCombinedMask(channel:ImagePlus):Array[Array[Array[Int]]] = {
+    val compartment_masks:List[Array[Array[Array[Int]]]] = compartments.map(_.getMaskingPixels(channel))
+    ArrayFunctions.addMultiple3DIntArrays(compartment_masks)
+  }
+
+//  def findThresholds(channels:Seq[ImagePlus],k:Int):Seq[Double] = {
+//    //Generates images containing the thresholded objects for each channel for the cell
+//    //First define the boundaries of the cell by adding the compartment masks together
+//    val combined_mask = getCombinedMask(channels.head)
+//
+//
+//
+//  }
+
+
 
 
   def visualInspection(image:ImagePlus): Unit ={
