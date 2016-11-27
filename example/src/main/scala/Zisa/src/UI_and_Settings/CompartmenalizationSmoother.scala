@@ -1,4 +1,4 @@
-package Zisa.src
+package Zisa.src.UI_and_Settings
 
 import java.text.NumberFormat
 
@@ -25,6 +25,7 @@ object CompartmentalizationSmoother {
     val preview_image = image.duplicate
     preview_image.setSlice(middle_slice)
     image.setSlice(middle_slice)
+    image.getProcessor().resetMinAndMax()
     image.show()
     image.getWindow.setLocationAndSize(100,100,700,700)
     preview_image.show()

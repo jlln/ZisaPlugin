@@ -13,6 +13,35 @@ import scala.annotation.tailrec
 
 
 object CompartmentProcessing {
+  @tailrec
+  def mergeCompartmentsToCells_(condition:String,cells:List[Cell],compartments:List[Compartment]):List[Cell] ={
+    if (compartments.isEmpty) return cells //If there are no more compartments to incorporate, return the cell list
+    val working_compartment = compartments.head
+    if (cells.isEmpty){ //If there are no cells, begin by creating a cell from the first compartment in the list
+    val new_cells_list = List(new Cell(condition,List(working_compartment)))
+      mergeCompartmentsToCells_(condition,new_cells_list,compartments.tail)
+    }
+    else{
+
+      val overlapping_cells = cells.filter(_.intersects(working_compartment))
+      if (overlapping_cells.isEmpty){
+        val new_cells_list = cells :+ new Cell(condition,List(working_compartment))
+        mergeCompartmentsToCells_(condition,new_cells_list,compartments.tail)
+      }
+      else if (overlapping_cells.length == 1){
+        val match_cell_index = cells.indexOf(overlapping_cells.head)
+        val updated_match_cell = overlapping_cells.head.append(working_compartment)
+        val new_cells_list = cells.updated(match_cell_index,updated_match_cell)
+        mergeCompartmentsToCells_(condition,new_cells_list,compartments.tail)
+      }
+      else{
+        val merged_cells = overlapping_cells.tail.foldLeft(overlapping_cells.head)(_.merge(_)).append(working_compartment)
+        val new_cells = cells.filter(!overlapping_cells.contains(_)) :+ merged_cells
+        mergeCompartmentsToCells_(condition,new_cells,compartments.tail)
+      }
+    }
+  }
+
 
   @tailrec
   def mergeCompartmentsToCells(condition:String,cells:List[Cell],compartments:List[Compartment]):List[Cell] = {
@@ -26,7 +55,8 @@ object CompartmentProcessing {
     else{  //If there are cells in the list, check the most recently created one to see if it can be expanded.
       val working_cell = cells.last
       val intersecting_compartments = compartments.filter(c=> working_cell.intersects((c)))
-      if (intersecting_compartments.isEmpty){ //If it cannot be expanded, create a new cell with an unused slice from the slice list
+      //If it cannot be expanded, create a new cell with an unused compartment from the compartment list
+      if (intersecting_compartments.isEmpty){
         val new_cell = new Cell(condition,List(compartments.head))
         val new_cells = cells :+ new_cell
         mergeCompartmentsToCells(condition,new_cells,compartments.tail)

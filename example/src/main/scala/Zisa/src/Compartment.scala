@@ -4,7 +4,7 @@ import ij.measure.ResultsTable
 import ij.plugin.filter.Analyzer
 import ij.process.ImageProcessor
 import ij.{IJ, ImagePlus}
-
+import services.Stats
 /**
   * Created by james on 3/05/16.
   */

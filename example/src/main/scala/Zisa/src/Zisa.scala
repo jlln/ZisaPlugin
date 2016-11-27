@@ -10,7 +10,7 @@ object Zisa{
 
 
   def main(args: Array[String]): Unit = {
-    UI.main(Array())
+    UI_and_Settings.UI.main(Array())
   }
 
 

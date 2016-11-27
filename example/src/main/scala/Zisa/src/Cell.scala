@@ -1,7 +1,7 @@
 package Zisa.src
 
 import ij.ImagePlus
-
+import services.ArrayFunctions
 /**
   * Created by james on 4/05/16.
   */
@@ -18,7 +18,12 @@ class Cell(experimental_condition:String,compartments:List[Compartment]) {
   }
 
 
-
+  def merge(that_cell:Cell):Cell = {
+    if (this.experimental_condition != that_cell.getCondition){
+      throw new Exception("Should not be merging cells with different experimental conditions.")
+    }
+    new Cell(this.experimental_condition,this.compartments ++ that_cell.getCompartments)
+  }
 
   def focus():Cell = {
     val focussed_compartments = compartments.map(_.focus)

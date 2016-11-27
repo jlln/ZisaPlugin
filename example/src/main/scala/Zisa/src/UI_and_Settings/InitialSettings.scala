@@ -1,6 +1,6 @@
-package Zisa.src
+package Zisa.src.UI_and_Settings
 
-import Measurement._
+import Zisa.src.{ExperimentSpecification, ExperimentStage, Measurement}
 import ij.ImagePlus
 
 import scalafx.Includes._

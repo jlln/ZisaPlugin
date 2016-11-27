@@ -49,7 +49,7 @@ object ImageIO {
 
 
 
-  def getImagePaths():Array[String] = {
+  def getImagePaths():(Array[String],String) = {
     val rd = getDirectory()
     val subdirectories:Array[String] = ImageIO.getListOfSubDirectories(rd)
     if (subdirectories.length == 0) {
@@ -61,7 +61,7 @@ object ImageIO {
       error("No tif files found")
       0
     }
-    images
+    (images,rd)
   }
 
   def prepareFirstImage(image_path:String):(ij.ImagePlus,Int) = {

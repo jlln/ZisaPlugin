@@ -1,8 +1,4 @@
-package Zisa.src
-
-import ij.{IJ, ImagePlus, WindowManager}
-
-import scalafx.application.JFXApp.PrimaryStage
+package Zisa.src.UI_and_Settings
 
 /**
   * Created by james on 4/09/16.

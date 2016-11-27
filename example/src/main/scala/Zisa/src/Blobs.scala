@@ -4,7 +4,7 @@ package Zisa.src
   */
 import ij._
 import ij.plugin.filter.ParticleAnalyzer
-
+import services.Stats
 
 object Blobs{
 

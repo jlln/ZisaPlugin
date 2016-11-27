@@ -3,7 +3,7 @@ package Zisa.src
 import ij.ImagePlus
 import ij.measure.ResultsTable
 import ij.plugin.filter.Analyzer
-
+import services.Stats
 
 object Measurement {
   //make a function that accepts an image and a cell and an image label and an experiment specification, and returns results.

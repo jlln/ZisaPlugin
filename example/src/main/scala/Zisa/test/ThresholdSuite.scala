@@ -2,7 +2,7 @@ package Zisa.test
 
 import Zisa.src._
 import org.scalatest._
-
+import services.Stats
 class ThresholdSuite extends FunSuite with Matchers {
   test("KMeans2Groups"){
     val items = List(1,2,3,7,8,9)

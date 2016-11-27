@@ -1,19 +1,16 @@
-package Zisa.src
+package Zisa.src.UI_and_Settings
 
+import Zisa.src.{ImageIO, ImageProcessing}
 import ij.ImagePlus
 import ij.measure.ResultsTable
 
-import scalafx.Includes._
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.geometry.Insets
 import scalafx.scene.Scene
 import scalafx.scene.control.Alert.AlertType
-import scalafx.scene.control.{Alert, ButtonType, Label, TextArea}
+import scalafx.scene.control.{Alert, ButtonType, Label}
 import scalafx.scene.layout.BorderPane
-import javafx.event.EventHandler
-import javafx.event.ActionEvent
-import scalafx.scene.control.Button
 /**
   * Created by james on 27/04/16.
   */
@@ -51,7 +48,12 @@ object UI extends JFXApp{
 
   // Execute Zisa
   val execute =  {
-    val images = ImageIO.getImagePaths
+    val images_and_rd= ImageIO.getImagePaths
+    val images = images_and_rd._1
+    val rd = images_and_rd._2.last match {
+      case '/' => images_and_rd._2
+      case _ => images_and_rd._2 + "/"
+    }
     val (first_image, middle_slice) = ImageIO.prepareFirstImage(images.head)
     val channels = ImageProcessing.splitChannels(first_image)
     val experiment = InitialSettings.initialSettings(stage, channels)
@@ -60,6 +62,8 @@ object UI extends JFXApp{
     val radii = compartment_channels.map(c => CompartmentalizationSmoother.dialogSmoother(stage, c, middle_slice))
     val results_table = new ResultsTable()
     images.map(i => ImageProcessing.processImage(radii, i, results_table,experiment))
+    results_table.save(rd + "ZisaAnalysis.csv")
+    println("Results saved to" + rd + "ZisaAnalysis")
   }
 
 
