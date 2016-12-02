@@ -33,6 +33,24 @@ object Blobs{
     kMeansIter(fitems,starting_groups)
   }
 
+  def prepareImage(k:Int,channel:Array[Array[Array[Float]]]):Array[Array[Array[Float]]] = {
+    val image_depth = channel.length
+    val image_height = channel.head.length
+    val image_width = channel.head.head.length
+    val pixels = channel.flatten.flatten
+    val threshold = kMeans(k,pixels)
+    val thresholded_pixels = pixels.map(p => {
+      if (p < threshold) 0
+      else 255
+      })
+    pixels.grouped(image_height*image_width).toArray.map(_.grouped(image_width).toArray)
+  }
+
+
+
+
+
+
   def nearestNeighbours(object_centroids:List[(Float,Float)]):List[Double] = {
     object_centroids.length match{
       case 0 => List(0)
@@ -103,10 +121,10 @@ object Blobs{
       result_entries
     }
   }
-  def analyzeAllBlobsInCompartmentInChannel(compartment:String,condition:String,pixels:Array[Array[Array[Int]]],colour:String,centroids:List[(Double,Double)]):Array[ResultEntry] = {
+  def analyzeAllBlobsInCompartmentInChannel(compartment:String,condition:String,pixels:Array[Array[Array[Int]]],colour:String,centroids:List[(Double,Double)]):Result = {
     //All the blobs in all the slices in one compartment, for one channel.
-    pixels.zip(centroids).flatMap{
+    new Result(compartment,condition,pixels.zip(centroids).flatMap{
       case (pixels,centroid)=>analyzeBlobsInSlice(compartment,condition,pixels,colour,centroid)
-    }
+    })
   }
 }

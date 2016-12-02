@@ -25,7 +25,7 @@ object UI extends JFXApp{
       root = new BorderPane{
         padding = Insets(25)
         center = new Label("Zisa")
-        bottom = new Label("Close this window to terminate the program.")
+        bottom = new Label("Close this window to terminate the program.\nDo not click on displayed images.")
       }
     }
     alwaysOnTop = true

@@ -59,18 +59,6 @@ class Cell(experimental_condition:String,compartments:List[Compartment]) {
     ArrayFunctions.addMultiple3DIntArrays(compartment_masks)
   }
 
-//  def findThresholds(channels:Seq[ImagePlus],k:Int):Seq[Double] = {
-//    //Generates images containing the thresholded objects for each channel for the cell
-//    //First define the boundaries of the cell by adding the compartment masks together
-//    val combined_mask = getCombinedMask(channels.head)
-//
-//
-//
-//  }
-
-
-
-
   def visualInspection(image:ImagePlus): Unit ={
     image.setRoi(getBoundingBox)
     val preview_image = image.duplicate()
@@ -78,11 +66,6 @@ class Cell(experimental_condition:String,compartments:List[Compartment]) {
     Thread.sleep(10000)
     preview_image.close()
   }
-
-
-
-
-
 
   override def toString = compartments.length.toString + "Compartments," + compartments.head.getSlices.length.toString + " Slices"
 }

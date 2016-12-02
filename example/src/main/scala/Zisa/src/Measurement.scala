@@ -6,7 +6,7 @@ import ij.plugin.filter.Analyzer
 import services.Stats
 
 object Measurement {
-  //make a function that accepts an image and a cell and an image label and an experiment specification, and returns results.
+  //make a function that accepts images and a cell and an experiment specification, and returns results.
   def conductExperiment(channels:Seq[ImagePlus],cell:Cell,specification:ExperimentSpecification):CellResultCollection = {
     val stages = specification.getExperimentStages
     val experiment_results = stages.map(s=> s.run(channels,cell))
@@ -93,6 +93,10 @@ object Measurement {
       current_pairs ++ correlationPearsonEntries(channels.tail,n+1,area,compartment_name)
     }
   }
+
+  val blobAnalysis:((Seq[ImagePlus],Cell) => List[Seq[Result]]) = (channels:Seq[ImagePlus],cell:Cell) => {
+
+    }
 
 
 

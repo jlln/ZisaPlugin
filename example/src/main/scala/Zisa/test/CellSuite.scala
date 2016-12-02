@@ -7,7 +7,15 @@ import ij.{IJ, ImagePlus, ImageStack}
 import ij.measure.ResultsTable
 import org.scalatest._
 
+import scalafx.application.JFXApp
+import scalafx.application.JFXApp.PrimaryStage
+import scalafx.geometry.Insets
+import scalafx.scene.Scene
+import scalafx.scene.control.Label
+import scalafx.scene.layout.BorderPane
+
 class CellSuite extends FunSuite with Matchers{
+
   val test_image_1_path = "/home/james/ZisaDev/ZisaPlugin/example/src/main/scala/Zisa/test/resources/test-1.tif"
 
 
